@@ -1,0 +1,27 @@
+# ===== 敏感文件(切勿提交) =====
+# HTTPS 自签名证书与私钥(首次运行服务器会自动生成)
+*.pem
+# 安卓签名密钥库(请务必在本地妥善备份)
+*.keystore
+*.jks
+
+# ===== 运行时数据与日志 =====
+# 用户同步数据(按设备落盘)
+data/
+server.log
+server.pid
+nohup.out
+
+# ===== 依赖与构建产物 =====
+node_modules/
+mobile/node_modules/
+
+# APK 发布包(建议通过 GitHub Releases 分发)
+*.apk
+
+# ===== 系统与编辑器 =====
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

@@ -1,0 +1,12 @@
+{
+  "appId": "com.timelogger.app",
+  "appName": "时间记录器",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": true
+  },
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  }
+}

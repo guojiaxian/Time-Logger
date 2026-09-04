@@ -1,0 +1,18 @@
+{
+  "name": "mobile",
+  "version": "1.0.0",
+  "description": "时间记录器 Android 客户端 (Capacitor)",
+  "main": "index.js",
+  "scripts": {
+    "sync-web": "cp ../web/index.html ../web/app.js ../web/style.css www/ && npx cap sync android",
+    "open-android": "npx cap open android"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^6.2.2",
+    "@capacitor/cli": "^6.2.2",
+    "@capacitor/core": "^6.2.2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "time-logger",
+  "version": "1.0.0",
+  "private": true,
+  "description": "时间记录器 Time Logger - 地震台阵敲击时刻记录 Web 应用",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
