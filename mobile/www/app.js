@@ -11,6 +11,10 @@
 (() => {
   'use strict';
 
+  // Capacitor 原生环境(APK): 标记后 CSS 增加沉浸式状态栏留白
+  if (window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform())
+    document.documentElement.classList.add('is-native');
+
   /* ================= 常量与时间工具 ================= */
 
   const LS_SETTINGS = 'tl_settings_v1';
@@ -151,6 +155,7 @@
   const btnTheme = $('btnTheme');
   const iconSun = $('iconSun');
   const iconMoon = $('iconMoon');
+  const tokenSetting = $('tokenSetting');
 
   /* ================= 状态 ================= */
 
@@ -408,6 +413,36 @@
     refreshPlotColors();
   }
 
+  /* ================= 底部导航: 记录 / 历史 / 设置 ================= */
+
+  function switchTab(name) {
+    document.querySelectorAll('.view').forEach((v) => v.classList.toggle('active', v.dataset.view === name));
+    document.querySelectorAll('.tabbar .tab').forEach((t) => {
+      const on = t.dataset.tab === name;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+
+  // 服务器是否启用令牌校验: 探测 /api/sync/stats, 启用时才显示"同步令牌"设置项
+  async function detectTokenRequirement() {
+    const need = !!(state.settings.syncToken || '').trim() || sync.meta.lastTokenRequired === true;
+    tokenSetting.hidden = !need;
+    try {
+      const base = (state.settings.syncServer || '').trim().replace(/\/+$/, '');
+      if (!base || !/^https?:$/.test(location.protocol)) return;
+      const ctl = new AbortController();
+      const timer = setTimeout(() => ctl.abort(), 6000);
+      const res = await fetch(base + '/api/sync/stats', { cache: 'no-store', signal: ctl.signal });
+      clearTimeout(timer);
+      if (!res.ok) return;
+      const j = await res.json();
+      sync.meta.lastTokenRequired = !!j.tokenRequired;
+      saveSyncMeta();
+      tokenSetting.hidden = !(j.tokenRequired || (state.settings.syncToken || '').trim());
+    } catch (e) { /* 探测失败(跨域受限/离线)时保持当前显隐 */ }
+  }
+
   /* ================= 数据同步: IndexedDB → 服务器单向备份 ================= */
 
   const SYNC_BATCH = 300;                        // 每批上传条数
@@ -443,6 +478,25 @@
   }
   function saveSyncMeta() {
     try { localStorage.setItem(LS_SYNC, JSON.stringify(sync.meta)); } catch (e) { /* 忽略 */ }
+  }
+
+  // 同步服务器地址默认值:
+  //   网页版(非 localhost) → 当前站点;  APK(localhost 离线包) → 上次同步成功的地址
+  // 已填写的用户配置始终优先, 不覆盖
+  function applyDefaultSyncServer() {
+    const cur = (state.settings.syncServer || '').trim();
+    if (cur) { setSyncServer.value = cur; return; }
+    let fallback = '';
+    const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+    if (!isLocal && /^https?:/.test(location.protocol)) fallback = location.origin;
+    else if (isLocal && sync.meta.lastServer) fallback = sync.meta.lastServer;
+    if (fallback) {
+      state.settings.syncServer = fallback;
+      setSyncServer.value = fallback;
+      saveSettings();
+    } else {
+      setSyncServer.value = '';
+    }
   }
 
   function syncLog(trigger, msg, level) {
@@ -619,6 +673,9 @@
       }
       sync.meta.lastOkAt = Date.now() + state.offsetMs;
       saveSyncMeta();
+      // APK 场景: 记住本次同步成功所用的服务器地址, 下次启动自动填入
+      const usedBase = (state.settings.syncServer || '').trim().replace(/\/+$/, '');
+      if (usedBase) { sync.meta.lastServer = usedBase; saveSyncMeta(); }
       setSyncState('ok');
       syncInfo.textContent = `本次上传: 敲击 ${sentHits} 条(服务器新增 ${storedHits}/跳过重复 ${dupHits}) · 会话 ${sentSess} 次`;
       syncBar.style.width = '100%';
@@ -1672,6 +1729,8 @@
   btnExport.addEventListener('click', exportCurrent);
   btnExportAll.addEventListener('click', exportAllSessions);
   btnSync.addEventListener('click', syncNetworkTime);
+  document.querySelectorAll('.tabbar .tab').forEach((t) =>
+    t.addEventListener('click', () => switchTab(t.dataset.tab)));
   btnTheme.addEventListener('click', () => {
     state.settings.theme = state.settings.theme === 'light' ? 'dark' : 'light';
     saveSettings();
@@ -1685,6 +1744,8 @@
   setSyncServer.addEventListener('input', () => {
     state.settings.syncServer = setSyncServer.value.trim();
     saveSettings();
+    clearTimeout(window.__tkDetect);
+    window.__tkDetect = setTimeout(detectTokenRequirement, 800);
   });
   window.addEventListener('online', () => {
     if (sync.pendingHits + sync.pendingSessions > 0) runSync('online');
@@ -1736,13 +1797,15 @@
     setPrefix.value = s.prefix || '';
     setComp.value = s.extraCompMs || 0;
     setToken.value = s.syncToken || '';
-    setSyncServer.value = s.syncServer || '';
+    // setSyncServer 由 applyDefaultSyncServer() 处理(带默认值回填), 此处不覆盖
   }
 
   async function init() {
     loadPersisted();
     loadSyncMeta();
     applyTheme();
+    applyDefaultSyncServer();
+    detectTokenRequirement();
     initSettingsUI();
     updateRecordingUI();
     sizeCanvas();

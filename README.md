@@ -12,21 +12,24 @@
 
 - 🎙️ **自动检测敲击**：基于阈值触发的瞬态声波检测，可调触发阈值与防重复间隔
 - ⏱️ **高精度时间戳**：北京时间 UTC+8，秒值小数位 2~6 位可配置，支持附加时间补偿
+- 📑 **三标签导航**：底部导航栏分为「记录 / 历史 / 设置」三个视图，功能分区清晰
+- 🗂️ **历史视图**：会话列表（导出/删除）、数据同步状态与日志集中管理，切屏即达
 - 💾 **本地持久化**：数据存入 IndexedDB（旧版本 localStorage 记录自动迁移），断网可用
 - 📤 **`.dat` 导出**：纯文本格式，每行一条时间戳，可直接用于后续数据处理
-- ☁️ **自动同步备份**：停止记录后自动增量上传至服务器，带 SHA-256 完整性校验、失败退避重试、断网续传，按设备落盘
+- ☁️ **自动同步备份**：停止记录后自动增量上传至服务器，带 SHA-256 完整性校验、失败退避重试、断网续传，按设备落盘；网页版自动填入当前站点作为同步地址，APK 会记住上次同步成功的服务器；同步令牌仅在服务器启用 `SYNC_TOKEN` 校验时才会显示
 - 📱 **PWA 支持**：可添加到主屏幕，全屏独立运行
 - 🌗 **深浅色主题**：一键切换深色/浅色界面，选择持久保存，刷新不闪烁
+- 🖥️ **沉浸式状态栏**：APK 内系统状态栏/导航栏全透明，内容延伸至其下，状态栏图标颜色随主题自动切换
 
 ## 界面预览
 
-| 记录界面 (深色) | 记录界面 (浅色) |
+| 记录 | 历史 |
 | --- | --- |
-| ![记录界面](docs/screenshots/recording.png) | ![浅色主题](docs/screenshots/light.png) |
+| ![记录界面](docs/screenshots/recording.png) | ![历史界面](docs/screenshots/history.png) |
 
-| 历史记录与数据同步 | 检测与导出设置 |
+| 浅色主题 | 设置 |
 | --- | --- |
-| ![历史记录与数据同步](docs/screenshots/history.png) | ![检测与导出设置](docs/screenshots/settings.png) |
+| ![浅色主题](docs/screenshots/light.png) | ![检测与导出设置](docs/screenshots/settings.png) |
 
 ## 项目结构
 
@@ -38,7 +41,8 @@ time-logger/
 ├── web/                 # Web 前端（服务端静态目录）
 │   ├── index.html
 │   ├── app.js           # 检测/记录/导出/同步核心逻辑
-│   └── style.css
+│   ├── style.css
+│   └── logo.png         # 应用图标
 ├── mobile/              # Android 客户端（Capacitor）
 │   ├── capacitor.config.json
 │   ├── www/             # web/ 的离线副本（npm run sync-web 同步）
@@ -125,6 +129,10 @@ cd mobile/android
 ./gradlew assembleDebug      # 调试包
 ./gradlew assembleRelease    # 发布包（需配置签名）
 ```
+
+### 沉浸式状态栏
+
+APK 内系统状态栏与导航栏全透明，网页内容延伸到系统栏之下（边到边布局），顶部安全距离由前端 `html.is-native` 样式自动处理；状态栏图标颜色随应用深浅色主题自动切换（实现在 `MainActivity.java` 与 `SSLTrustWebViewClient.java`）。
 
 > ⚠️ 签名密钥库（`*.keystore`）与私钥（`*.pem`）已在 `.gitignore` 中排除，**切勿提交到仓库**，请在本地妥善备份。发布版 APK 建议通过 GitHub Releases 分发。
 

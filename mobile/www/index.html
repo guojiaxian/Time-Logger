@@ -19,9 +19,9 @@
 <meta name="apple-mobile-web-app-title" content="时间记录器" />
 <meta name="mobile-web-app-capable" content="yes" />
 <title>时间记录器 · Time Logger</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%230b1220' stroke='%2322d3ee' stroke-width='4'/%3E%3Cpath d='M32 32 L32 15 M32 32 L44 39' stroke='%23e2f3ff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="icon" type="image/png" href="logo.png" />
 <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E6%97%B6%E9%97%B4%E8%AE%B0%E5%BD%95%E5%99%A8%22%2C%22short_name%22%3A%22TimeLogger%22%2C%22start_url%22%3A%22.%2Findex.html%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1220%22%2C%22theme_color%22%3A%22%230b1220%22%7D" />
-<link rel="stylesheet" href="style.css?v=4" />
+<link rel="stylesheet" href="style.css?v=6" />
 </head>
 <body>
 
@@ -43,158 +43,186 @@
     </div>
   </header>
 
-  <!-- 实时北京时间 -->
-  <section class="card clock-card">
-    <div class="clock" id="clock">--:--:--.---</div>
-    <div class="clock-meta">
-      <span>北京时间 UTC+8</span>
-      <span class="sep">·</span>
-      <span id="dateLine">----年--月--日 周-</span>
-    </div>
-  </section>
+  <!-- ========== 视图: 记录 ========== -->
+  <main class="view active" data-view="record">
 
-  <!-- 记录状态 -->
-  <section class="card stats">
-    <div class="stat">
-      <div class="stat-value" id="hitCount">0</div>
-      <div class="stat-label">已记录敲击</div>
-    </div>
-    <div class="divider"></div>
-    <div class="stat">
-      <div class="stat-value stat-time" id="lastHit">--:--:--.---</div>
-      <div class="stat-label">最近记录时刻</div>
-    </div>
-  </section>
+    <!-- 实时北京时间 -->
+    <section class="card clock-card">
+      <div class="clock" id="clock">--:--:--.---</div>
+      <div class="clock-meta">
+        <span>北京时间 UTC+8</span>
+        <span class="sep">·</span>
+        <span id="dateLine">----年--月--日 周-</span>
+      </div>
+    </section>
 
-  <!-- 信号电平表 -->
-  <section class="card meter-card">
-    <div class="meter-head">
-      <span>声音信号电平 (峰值)</span>
-      <span class="mic-state" id="micState"><span class="dot"></span>待机</span>
-    </div>
-    <canvas id="meterCanvas"></canvas>
-    <div class="clip-hint" id="clipHint" hidden>信号过强: 建议将手机移远敲击点, 否则时刻定位精度下降</div>
-  </section>
+    <!-- 记录状态 -->
+    <section class="card stats">
+      <div class="stat">
+        <div class="stat-value" id="hitCount">0</div>
+        <div class="stat-label">已记录敲击</div>
+      </div>
+      <div class="divider"></div>
+      <div class="stat">
+        <div class="stat-value stat-time" id="lastHit">--:--:--.---</div>
+        <div class="stat-label">最近记录时刻</div>
+      </div>
+    </section>
 
-  <!-- 控制 -->
-  <section class="controls">
-    <button id="btnToggle" class="btn-main" aria-label="开始或停止记录">
-      <svg id="iconPlay" viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6L19.2 12z"/></svg>
-      <svg id="iconStop" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true" style="display:none"><rect x="6.2" y="6.2" width="11.6" height="11.6" rx="2.5"/></svg>
-      <span id="btnLabel">开始记录</span>
-    </button>
+    <!-- 信号电平表 -->
+    <section class="card meter-card">
+      <div class="meter-head">
+        <span>声音信号电平 (峰值)</span>
+        <span class="mic-state" id="micState"><span class="dot"></span>待机</span>
+      </div>
+      <canvas id="meterCanvas"></canvas>
+      <div class="clip-hint" id="clipHint" hidden>信号过强: 建议将手机移远敲击点, 否则时刻定位精度下降</div>
+    </section>
 
-    <div class="btn-row">
-      <button id="btnManual" class="btn">手动补记</button>
-      <button id="btnUndo" class="btn">
-        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5 3 10l5 5"/><path d="M3 10h10.5a6.5 6.5 0 0 1 6.5 6.5V19"/></svg>
-        撤销一条
+    <!-- 控制 -->
+    <section class="controls">
+      <button id="btnToggle" class="btn-main" aria-label="开始或停止记录">
+        <svg id="iconPlay" viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6L19.2 12z"/></svg>
+        <svg id="iconStop" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true" style="display:none"><rect x="6.2" y="6.2" width="11.6" height="11.6" rx="2.5"/></svg>
+        <span id="btnLabel">开始记录</span>
       </button>
-      <button id="btnClear" class="btn btn-danger">清空</button>
-    </div>
 
-    <button id="btnExport" class="btn-export">
-      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 11l5 5 5-5"/><path d="M4.5 19.5h15"/></svg>
-      一键导出 .dat 文件
-    </button>
-  </section>
+      <div class="btn-row">
+        <button id="btnManual" class="btn">手动补记</button>
+        <button id="btnUndo" class="btn">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5 3 10l5 5"/><path d="M3 10h10.5a6.5 6.5 0 0 1 6.5 6.5V19"/></svg>
+          撤销一条
+        </button>
+        <button id="btnClear" class="btn btn-danger">清空</button>
+      </div>
 
-  <!-- 记录列表 -->
-  <section class="card list-card">
-    <div class="list-head">
-      <span>敲击记录 (按时间正序存储)</span>
-      <span class="list-count" id="listCount">0 条</span>
-    </div>
-    <div class="empty" id="emptyHint">暂无记录 · 点击"开始记录"后用锤敲击地面</div>
-    <ul class="record-list" id="recordList"></ul>
-  </section>
+      <button id="btnExport" class="btn-export">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 11l5 5 5-5"/><path d="M4.5 19.5h15"/></svg>
+        一键导出 .dat 文件
+      </button>
+    </section>
 
-  <!-- 历史记录 (会话) -->
-  <details class="card settings" id="historyBox">
-    <summary>历史记录 (按开始/结束会话)<span class="list-count" id="historyCount">0 次</span></summary>
-    <div class="hist-actions">
-      <button id="btnExportAll" class="btn btn-block">导出全部会话 (.dat)</button>
-    </div>
-    <div class="empty" id="historyEmpty">暂无历史记录 · 每次开始/停止记录将存为一条会话</div>
-    <ul class="record-list history-list" id="historyList"></ul>
-  </details>
+    <!-- 记录列表 -->
+    <section class="card list-card">
+      <div class="list-head">
+        <span>敲击记录 (按时间正序存储)</span>
+        <span class="list-count" id="listCount">0 条</span>
+      </div>
+      <div class="empty" id="emptyHint">暂无记录 · 点击"开始记录"后用锤敲击地面</div>
+      <ul class="record-list" id="recordList"></ul>
+    </section>
 
-  <!-- 数据同步 (单向备份至服务器) -->
-  <section class="card sync-card">
-    <div class="sync-head">
-      <span class="sync-title">数据同步 · 单向备份至服务器</span>
-      <span class="sync-state" id="syncState"><span class="dot"></span>检查中…</span>
-    </div>
-    <div class="progress"><div class="bar" id="syncBar"></div></div>
-    <div class="sync-row">
-      <span class="sync-info" id="syncInfo">待同步 0 条敲击 · 0 次会话</span>
-      <button id="btnSyncNow" class="btn-mini">立即同步</button>
-    </div>
-    <details class="sync-log-box">
-      <summary>同步日志</summary>
-      <ul id="syncLogList" class="sync-log"></ul>
+    <footer class="foot">
+      <p>提示: 敲击时保持手机亮屏并靠近声源; 建议开启勿扰模式; 数据自动保存在本机, 页面刷新或离线不丢失</p>
+    </footer>
+  </main>
+
+  <!-- ========== 视图: 历史 ========== -->
+  <main class="view" data-view="history">
+
+    <!-- 历史记录 (会话) -->
+    <details class="card settings" id="historyBox" open>
+      <summary>历史记录 (按开始/结束会话)<span class="list-count" id="historyCount">0 次</span></summary>
+      <div class="hist-actions">
+        <button id="btnExportAll" class="btn btn-block">导出全部会话 (.dat)</button>
+      </div>
+      <div class="empty" id="historyEmpty">暂无历史记录 · 每次开始/停止记录将存为一条会话</div>
+      <ul class="record-list history-list" id="historyList"></ul>
     </details>
-  </section>
 
-  <!-- 设置 -->
-  <details class="card settings" id="settingsBox">
-    <summary>检测与导出设置</summary>
-    <div class="setting">
-      <label for="setThreshold">触发阈值 (灵敏度) <b id="thVal">0.18</b></label>
-      <input type="range" id="setThreshold" min="0.02" max="0.95" step="0.01" value="0.18" />
-      <p class="hint">值越小越灵敏。结合上方电平表红色虚线调节, 环境嘈杂或误触发多时调大</p>
-    </div>
-    <div class="setting">
-      <label>声音阈值校正 (推荐)</label>
-      <button id="btnCalib" class="btn btn-block btn-calib">校正声音阈值</button>
-      <p class="hint">误触发频繁或敲击不触发时使用: 自动测量环境噪音基线与敲击样本, 按信噪比计算最佳阈值并持久化保存</p>
-    </div>
-    <div class="setting">
-      <label for="setRefractory">防重复间隔 <b id="rfVal">500</b> ms</label>
-      <input type="range" id="setRefractory" min="100" max="2000" step="50" value="500" />
-      <p class="hint">一次敲击后该时间窗内忽略新触发, 防止回声与地面余振造成重复记录</p>
-    </div>
-    <div class="setting">
-      <label for="setPrecision">导出与记录精度 (秒值小数位, 最高6位)</label>
-      <select id="setPrecision">
-        <option value="2" selected>2位 · 14:28:00.45</option>
-        <option value="3">3位 · 14:28:00.456</option>
-        <option value="4">4位 · 14:28:00.4567</option>
-        <option value="5">5位 · 14:28:00.45678</option>
-        <option value="6">6位 · 14:28:00.456789</option>
-      </select>
-      <p class="hint">时间源分辨率为1毫秒, 选择4~6位时末尾小数为补零显示</p>
-    </div>
-    <div class="setting">
-      <label for="setPrefix">导出文件名前缀 (测线/项目名)</label>
-      <input type="text" id="setPrefix" placeholder="timelogger" maxlength="40" autocomplete="off" />
-    </div>
-    <div class="setting">
-      <label for="setToken">同步令牌 (可选)</label>
-      <input type="text" id="setToken" placeholder="与服务器 SYNC_TOKEN 环境变量一致" autocomplete="off" />
-      <p class="hint">服务器未启用令牌校验时留空即可</p>
-    </div>
-    <div class="setting">
-      <label for="setSyncServer">同步服务器地址 (APK 离线包用)</label>
-      <input type="text" id="setSyncServer" placeholder="如 https://192.168.1.100:8443" autocomplete="off" inputmode="url" />
-      <p class="hint">手机浏览器打开本页时留空(自动用当前站点); 安装APK后填入服务器地址, 支持 https 与 http</p>
-    </div>
-    <div class="setting">
-      <label for="setComp">附加时间补偿 (ms)</label>
-      <input type="number" id="setComp" step="10" value="0" />
-      <p class="hint" id="compInfo">正值延后、负值提前; 系统已自动补偿音频通道延迟</p>
-    </div>
-    <div class="setting">
-      <label>时间校准</label>
-      <button id="btnSync" class="btn btn-block">网络校时 (北京时间)</button>
-      <p class="hint" id="syncStatus">使用手机系统时间; 若手机已开启"自动时间"通常足够精确</p>
-    </div>
-  </details>
+    <!-- 数据同步 (单向备份至服务器) -->
+    <section class="card sync-card">
+      <div class="sync-head">
+        <span class="sync-title">数据同步 · 单向备份至服务器</span>
+        <span class="sync-state" id="syncState"><span class="dot"></span>检查中…</span>
+      </div>
+      <div class="progress"><div class="bar" id="syncBar"></div></div>
+      <div class="sync-row">
+        <span class="sync-info" id="syncInfo">待同步 0 条敲击 · 0 次会话</span>
+        <button id="btnSyncNow" class="btn-mini">立即同步</button>
+      </div>
+      <details class="sync-log-box">
+        <summary>同步日志</summary>
+        <ul id="syncLogList" class="sync-log"></ul>
+      </details>
+    </section>
+  </main>
 
-  <footer class="foot">
-    <p>提示: 敲击时保持手机亮屏并靠近声源; 建议开启勿扰模式; 数据自动保存在本机, 页面刷新或离线不丢失</p>
-  </footer>
+  <!-- ========== 视图: 设置 ========== -->
+  <main class="view" data-view="settings">
+
+    <!-- 设置 -->
+    <details class="card settings" id="settingsBox" open>
+      <summary>检测与导出设置</summary>
+      <div class="setting">
+        <label for="setThreshold">触发阈值 (灵敏度) <b id="thVal">0.18</b></label>
+        <input type="range" id="setThreshold" min="0.02" max="0.95" step="0.01" value="0.18" />
+        <p class="hint">值越小越灵敏。结合记录页电平表红色虚线调节, 环境嘈杂或误触发多时调大</p>
+      </div>
+      <div class="setting">
+        <label>声音阈值校正 (推荐)</label>
+        <button id="btnCalib" class="btn btn-block btn-calib">校正声音阈值</button>
+        <p class="hint">误触发频繁或敲击不触发时使用: 自动测量环境噪音基线与敲击样本, 按信噪比计算最佳阈值并持久化保存</p>
+      </div>
+      <div class="setting">
+        <label for="setRefractory">防重复间隔 <b id="rfVal">500</b> ms</label>
+        <input type="range" id="setRefractory" min="100" max="2000" step="50" value="500" />
+        <p class="hint">一次敲击后该时间窗内忽略新触发, 防止回声与地面余振造成重复记录</p>
+      </div>
+      <div class="setting">
+        <label for="setPrecision">导出与记录精度 (秒值小数位, 最高6位)</label>
+        <select id="setPrecision">
+          <option value="2" selected>2位 · 14:28:00.45</option>
+          <option value="3">3位 · 14:28:00.456</option>
+          <option value="4">4位 · 14:28:00.4567</option>
+          <option value="5">5位 · 14:28:00.45678</option>
+          <option value="6">6位 · 14:28:00.456789</option>
+        </select>
+        <p class="hint">时间源分辨率为1毫秒, 选择4~6位时末尾小数为补零显示</p>
+      </div>
+      <div class="setting">
+        <label for="setPrefix">导出文件名前缀 (测线/项目名)</label>
+        <input type="text" id="setPrefix" placeholder="timelogger" maxlength="40" autocomplete="off" />
+      </div>
+      <div class="setting" id="tokenSetting" hidden>
+        <label for="setToken">同步令牌</label>
+        <input type="text" id="setToken" placeholder="与服务器 SYNC_TOKEN 环境变量一致" autocomplete="off" />
+        <p class="hint">服务器已启用令牌校验, 请填入部署时设置的 SYNC_TOKEN</p>
+      </div>
+      <div class="setting">
+        <label for="setSyncServer">同步服务器地址 (APK 离线包用)</label>
+        <input type="text" id="setSyncServer" placeholder="如 https://192.168.1.100:8443" autocomplete="off" inputmode="url" />
+        <p class="hint">手机浏览器打开本页时自动填入当前站点; APK 安装后填入服务器地址, 同步成功后会自动记住</p>
+      </div>
+      <div class="setting">
+        <label for="setComp">附加时间补偿 (ms)</label>
+        <input type="number" id="setComp" step="10" value="0" />
+        <p class="hint" id="compInfo">正值延后、负值提前; 系统已自动补偿音频通道延迟</p>
+      </div>
+      <div class="setting">
+        <label>时间校准</label>
+        <button id="btnSync" class="btn btn-block">网络校时 (北京时间)</button>
+        <p class="hint" id="syncStatus">使用手机系统时间; 若手机已开启"自动时间"通常足够精确</p>
+      </div>
+    </details>
+  </main>
 </div>
+
+<!-- 底部导航 -->
+<nav class="tabbar" aria-label="主导航">
+  <button class="tab active" data-tab="record" type="button" role="tab" aria-selected="true">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6" fill="currentColor" stroke="none"/></svg>
+    <span>记录</span>
+  </button>
+  <button class="tab" data-tab="history" type="button" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6L3.5 8.5"/><path d="M3.5 3.5v5h5"/><path d="M12 7.5V12l3 2"/></svg>
+    <span>历史</span>
+  </button>
+  <button class="tab" data-tab="settings" type="button" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.08a1.7 1.7 0 0 0 1.03-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.08a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.03z"/></svg>
+    <span>设置</span>
+  </button>
+</nav>
 
 <!-- 声音阈值校正弹窗 -->
 <div id="calibModal" class="modal" hidden>
@@ -214,6 +242,6 @@
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-<script src="app.js?v=5"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>

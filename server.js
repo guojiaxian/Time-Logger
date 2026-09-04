@@ -274,9 +274,16 @@ function serveStatic(req, res) {
 
 function route(req, res) {
   const u = (req.url || '').split('?')[0];
-  if (u === '/api/sync' && req.method === 'POST') return handleSyncPost(req, res);
-  if (u === '/api/sync/stats' && req.method === 'GET') return handleStats(req, res);
-  if (u.startsWith('/api/')) return jsonRes(res, 404, { ok: false, error: 'not found' });
+  // API 允许跨域: APK 内 WebView 源为 https://localhost, 访问局域网服务器属跨域场景
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Sync-Token, X-TimeLogger-Sync');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  if (u.startsWith('/api/')) {
+    if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
+    if (u === '/api/sync' && req.method === 'POST') return handleSyncPost(req, res);
+    if (u === '/api/sync/stats' && req.method === 'GET') return handleStats(req, res);
+    return jsonRes(res, 404, { ok: false, error: 'not found' });
+  }
   serveStatic(req, res);
 }
 
