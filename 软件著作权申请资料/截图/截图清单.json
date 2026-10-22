@@ -1,0 +1,14 @@
+{
+  "screenshot_method": "chrome-devtools",
+  "screenshots": [
+    { "id": "record_view", "desc": "记录视图完成若干次敲击后的整体界面", "file": "assets/record_view.png", "embed_in": "操作手册-四" },
+    { "id": "record_view_meter", "desc": "记录页电平表与整体界面", "file": "assets/record_view.png", "embed_in": "操作手册-五" },
+    { "id": "record_manual", "desc": "手动补记与记录列表状态", "file": "assets/record_manual.png", "embed_in": "操作手册-六" },
+    { "id": "history_view", "desc": "历史会话列表与同步状态", "file": "assets/history_view.png", "embed_in": "操作手册-八/九" },
+    { "id": "settings_view", "desc": "设置视图完整参数项", "file": "assets/settings_view.png", "embed_in": "操作手册-十" },
+    { "id": "calib_modal", "desc": "声音阈值校正弹窗", "file": "assets/calib_modal.png", "embed_in": "操作手册-十一" },
+    { "id": "time_sync", "desc": "网络时间校准结果", "file": "assets/time_sync.png", "embed_in": "操作手册-十二" },
+    { "id": "theme_light", "desc": "浅色主题界面", "file": "assets/theme_light.png", "embed_in": "操作手册-十二" }
+  ],
+  "note": "导出下载提示与真实敲击峰值波形依赖实时设备/下载动作，保留截图预留位由申报方补充"
+}

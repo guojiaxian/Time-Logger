@@ -1,0 +1,245 @@
+{
+  "project_root": "/root/time-logger",
+  "selection_required": true,
+  "model_selection_required": true,
+  "confirmation_required": true,
+  "user_confirmed": true,
+  "target_pages": 60,
+  "lines_per_page": 50,
+  "target_lines": 3000,
+  "supplement_rule": "模型优先选择能体现软件核心功能和真实运行逻辑的源码；不足60页时再从其他相关源码中补充；候选源码仍不足时才生成全部代码材料。",
+  "confirmation_stage": "code-selection",
+  "next_action": "请由模型填写 草稿/代码文件选择.json 的抽取选择和选择理由，再让用户确认；确认后运行 confirm_stage.py --stage code-selection。",
+  "instructions": "The script only inventories source files. The model must choose selected/model_reason before user confirmation. Selected files are extracted in full with blank-only lines removed.",
+  "confirmation_note": "确认代码文件选择,已去除同源重复副本(mobile/www/app.js),补充安卓真实构建/清单/资源源码,确保抽取核心代码且不产生查重问题",
+  "confirmed_at": "2026-09-08T02:37:40+00:00",
+  "files": [
+    {
+      "path": "mobile/android/app/src/main/java/com/timelogger/app/MainActivity.java",
+      "selected": true,
+      "line_count": 22,
+      "material_line_count": 18,
+      "selection_tier": "supplement",
+      "evidence": "页面文件证据",
+      "model_reason": "Android 客户端宿主 Activity，负责加载 WebView 内容并启用麦克风等原生能力，是 APK 的门面入口。"
+    },
+    {
+      "path": "mobile/android/app/src/main/java/com/timelogger/app/SSLTrustWebViewClient.java",
+      "selected": true,
+      "line_count": 51,
+      "material_line_count": 46,
+      "selection_tier": "supplement",
+      "evidence": "页面文件证据",
+      "model_reason": "自定义 WebViewClient，处理局域网自签名 HTTPS 证书信任，保证 APK 内可正常访问同步服务器并启用麦克风，体现原生侧关键适配逻辑。"
+    },
+    {
+      "path": "server.js",
+      "selected": true,
+      "line_count": 334,
+      "material_line_count": 314,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": "零依赖 Node.js 服务端，提供 HTTPS 静态服务与敲击/会话数据的增量同步备份接口，是后台数据汇总的核心实现。"
+    },
+    {
+      "path": "web/app.js",
+      "selected": true,
+      "line_count": 1835,
+      "material_line_count": 1698,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": "软件核心前端逻辑，实现麦克风瞬态声波检测、精确时间戳记录、电平可视化、手动补记/撤销/导出、历史会话、阈值校正、网络校时与增量同步，最能体现软件真实运行功能。"
+    },
+    {
+      "path": "web/index.html",
+      "selected": true,
+      "line_count": 247,
+      "material_line_count": 226,
+      "selection_tier": "frontend",
+      "evidence": "普通源码文件",
+      "model_reason": "单页应用入口页面，定义记录/历史/设置三个视图及全部控件结构，是用户交互与功能入口的载体。"
+    },
+    {
+      "path": "web/style.css",
+      "selected": true,
+      "line_count": 420,
+      "material_line_count": 388,
+      "selection_tier": "frontend",
+      "evidence": "样式文件证据",
+      "model_reason": "记录/历史/设置三视图与环境布置、沉浸式状态栏的界面样式定义，体现软件完整的界面呈现。"
+    },
+    {
+      "path": "mobile/capacitor.config.json",
+      "selected": true,
+      "line_count": 12,
+      "material_line_count": 12,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Capacitor 打包配置，声明 webDir 与原生插件，是生成安卓离线 APK 的构建入口配置。"
+    },
+    {
+      "path": "start.sh",
+      "selected": true,
+      "line_count": 38,
+      "material_line_count": 31,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "服务器启动脚本，完成 HTTPS 服务后台启动、PID 与日志管理，辅助理解软件服务端部署运行方式。"
+    },
+    {
+      "path": "stop.sh",
+      "selected": true,
+      "line_count": 48,
+      "material_line_count": 43,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "服务器停止脚本，按 PID 结束服务进程，辅助理解服务部署与启停管理。"
+    },
+    {
+      "path": "mobile/android/app/build.gradle",
+      "selected": true,
+      "line_count": 71,
+      "material_line_count": 63,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Android app 模块 Gradle 构建脚本，声明应用 ID、SDK 版本与依赖，是 APK 打包的真实构建源码。"
+    },
+    {
+      "path": "mobile/android/app/src/main/AndroidManifest.xml",
+      "selected": true,
+      "line_count": 46,
+      "material_line_count": 40,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Android 应用清单，声明录音/网络等权限与启动 Activity，是 APK 运行时权限与入口的真实配置。"
+    },
+    {
+      "path": "mobile/android/build.gradle",
+      "selected": true,
+      "line_count": 29,
+      "material_line_count": 24,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "根工程 Gradle 构建脚本，声明仓库与插件版本，辅助理解安卓工程整体构建。"
+    },
+    {
+      "path": "mobile/android/app/capacitor.build.gradle",
+      "selected": true,
+      "line_count": 19,
+      "material_line_count": 15,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Capacitor 生成的模块构建脚本，辅助理解 APK 打包对原生能力的接入。"
+    },
+    {
+      "path": "mobile/android/variables.gradle",
+      "selected": true,
+      "line_count": 15,
+      "material_line_count": 11,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Gradle 版本变量声明，辅助理解安卓工程构建参数。"
+    },
+    {
+      "path": "mobile/android/gradle.properties",
+      "selected": true,
+      "line_count": 22,
+      "material_line_count": 19,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Gradle JVM 与构建内存参数配置文件，辅助理解构建环境。"
+    },
+    {
+      "path": "mobile/android/app/src/main/res/layout/activity_main.xml",
+      "selected": true,
+      "line_count": 12,
+      "material_line_count": 10,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "宿主 Activity 布局资源，辅助理解 APK 原生视图结构。"
+    },
+    {
+      "path": "mobile/android/app/src/main/res/values/styles.xml",
+      "selected": true,
+      "line_count": 21,
+      "material_line_count": 18,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "APP 主题样式资源，体现状态栏透明与主题样式配置。"
+    },
+    {
+      "path": "mobile/android/app/src/main/res/values/strings.xml",
+      "selected": true,
+      "line_count": 7,
+      "material_line_count": 5,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "应用名称等字符串资源，辅助理解 APK 界面文案来源。"
+    },
+    {
+      "path": "mobile/android/app/src/main/res/xml/config.xml",
+      "selected": true,
+      "line_count": 5,
+      "material_line_count": 3,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Capacitor 运行时配置资源，辅助理解 APK 原生配置。"
+    },
+    {
+      "path": "mobile/android/capacitor-cordova-android-plugins/build.gradle",
+      "selected": true,
+      "line_count": 58,
+      "material_line_count": 52,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Capacitor Cordova 插件模块构建脚本，辅助理解 APK 对原生插件能力的接入。"
+    },
+    {
+      "path": "mobile/android/gradle/wrapper/gradle-wrapper.properties",
+      "selected": true,
+      "line_count": 7,
+      "material_line_count": 6,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Gradle Wrapper 配置，声明本地 Gradle 版本，辅助理解 APK 构建环境。"
+    },
+    {
+      "path": "mobile/android/settings.gradle",
+      "selected": true,
+      "line_count": 4,
+      "material_line_count": 4,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Gradle 工程模块声明，辅助理解安卓工程结构。"
+    },
+    {
+      "path": "mobile/android/capacitor.settings.gradle",
+      "selected": true,
+      "line_count": 3,
+      "material_line_count": 3,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Capacitor 工程引入配置，辅助理解 APK 打包工程组成。"
+    },
+    {
+      "path": "mobile/android/capacitor-cordova-android-plugins/cordova.variables.gradle",
+      "selected": true,
+      "line_count": 6,
+      "material_line_count": 5,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "Cordova 变量声明，辅助理解原生插件编译参数。"
+    },
+    {
+      "path": "mobile/android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml",
+      "selected": true,
+      "line_count": 34,
+      "material_line_count": 28,
+      "selection_tier": "supplement",
+      "evidence": "补充源码证据",
+      "model_reason": "应用图标前景矢量资源，体现软件启动图标设计实现。"
+    }
+  ],
+  "estimated_selected_lines": 3082,
+  "estimated_selected_pages": 61.6
+}

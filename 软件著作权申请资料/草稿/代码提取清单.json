@@ -1,0 +1,113 @@
+{
+  "software_name": "台阵设备一致性检测时间记录器",
+  "version": "V1.0",
+  "project_root": "/root/time-logger",
+  "file_count": 9,
+  "material_line_count": 2785,
+  "source_line_count": 3007,
+  "selected_source_line_count": 2776,
+  "lines_per_page": 50,
+  "total_pages": 56,
+  "target_pages": 60,
+  "available_candidate_line_count": 3107,
+  "available_candidate_pages": 63,
+  "supplement_status": "候选源码可达到前30页/后30页要求",
+  "mode": "all_under_60_pages",
+  "selection_file": "软件著作权申请资料/草稿/代码文件选择.json",
+  "outputs": [
+    "代码-全部.md"
+  ],
+  "files": [
+    {
+      "path": "mobile/android/app/src/main/java/com/timelogger/app/MainActivity.java",
+      "source_line_count": 22,
+      "blank_line_count": 4,
+      "selected_line_start": 1,
+      "selected_line_end": 22,
+      "selected_line_count": 18,
+      "material_line_start": 1,
+      "material_line_end": 19
+    },
+    {
+      "path": "mobile/android/app/src/main/java/com/timelogger/app/SSLTrustWebViewClient.java",
+      "source_line_count": 51,
+      "blank_line_count": 5,
+      "selected_line_start": 1,
+      "selected_line_end": 51,
+      "selected_line_count": 46,
+      "material_line_start": 20,
+      "material_line_end": 66
+    },
+    {
+      "path": "server.js",
+      "source_line_count": 334,
+      "blank_line_count": 20,
+      "selected_line_start": 1,
+      "selected_line_end": 334,
+      "selected_line_count": 314,
+      "material_line_start": 67,
+      "material_line_end": 381
+    },
+    {
+      "path": "web/app.js",
+      "source_line_count": 1835,
+      "blank_line_count": 137,
+      "selected_line_start": 1,
+      "selected_line_end": 1835,
+      "selected_line_count": 1698,
+      "material_line_start": 382,
+      "material_line_end": 2080
+    },
+    {
+      "path": "web/index.html",
+      "source_line_count": 247,
+      "blank_line_count": 21,
+      "selected_line_start": 1,
+      "selected_line_end": 247,
+      "selected_line_count": 226,
+      "material_line_start": 2081,
+      "material_line_end": 2307
+    },
+    {
+      "path": "web/style.css",
+      "source_line_count": 420,
+      "blank_line_count": 32,
+      "selected_line_start": 1,
+      "selected_line_end": 420,
+      "selected_line_count": 388,
+      "material_line_start": 2308,
+      "material_line_end": 2696
+    },
+    {
+      "path": "mobile/capacitor.config.json",
+      "source_line_count": 12,
+      "blank_line_count": 0,
+      "selected_line_start": 1,
+      "selected_line_end": 12,
+      "selected_line_count": 12,
+      "material_line_start": 2697,
+      "material_line_end": 2709
+    },
+    {
+      "path": "start.sh",
+      "source_line_count": 38,
+      "blank_line_count": 7,
+      "selected_line_start": 1,
+      "selected_line_end": 38,
+      "selected_line_count": 31,
+      "material_line_start": 2710,
+      "material_line_end": 2741
+    },
+    {
+      "path": "stop.sh",
+      "source_line_count": 48,
+      "blank_line_count": 5,
+      "selected_line_start": 1,
+      "selected_line_end": 48,
+      "selected_line_count": 43,
+      "material_line_start": 2742,
+      "material_line_end": 2785
+    }
+  ],
+  "safe_software_filename": "台阵设备一致性检测时间记录器"
+}

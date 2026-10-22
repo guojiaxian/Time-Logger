@@ -1,0 +1,85 @@
+{
+  "project_root": "/root/time-logger",
+  "project_name": "time-logger",
+  "software_name_candidate": "time logger",
+  "package": {
+    "name": "time-logger",
+    "path": "package.json",
+    "version": "1.0.0",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "dependency_names": []
+  },
+  "frameworks": [],
+  "language": "JavaScript、Java、Shell",
+  "source": {
+    "file_count": 23,
+    "line_count": 8108,
+    "total_file_count": 23,
+    "total_line_count": 8108,
+    "extension_counts": {
+      ".css": 3,
+      ".html": 3,
+      ".java": 4,
+      ".js": 6,
+      ".json": 5,
+      ".sh": 2
+    },
+    "category_counts": {
+      "page": 10,
+      "source": 10,
+      "style": 3
+    },
+    "categorized_files": {
+      "page": [
+        "mobile/android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java",
+        "mobile/android/app/src/main/java/com/timelogger/app/MainActivity.java",
+        "mobile/android/app/src/main/java/com/timelogger/app/SSLTrustWebViewClient.java",
+        "mobile/android/app/src/main/assets/capacitor.config.json",
+        "mobile/android/app/src/main/assets/capacitor.plugins.json",
+        "mobile/android/app/src/main/assets/public/index.html",
+        "mobile/android/app/src/main/assets/public/app.js",
+        "mobile/android/app/src/main/assets/public/cordova.js",
+        "mobile/android/app/src/main/assets/public/cordova_plugins.js",
+        "mobile/android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java"
+      ],
+      "style": [
+        "mobile/www/style.css",
+        "mobile/android/app/src/main/assets/public/style.css",
+        "web/style.css"
+      ],
+      "source": [
+        "server.js",
+        "start.sh",
+        "stop.sh",
+        "data/testdev0001/sessions.json",
+        "data/5aa50343-c5fb-434b-8186-4ea2d4b013cd/sessions.json",
+        "mobile/capacitor.config.json",
+        "mobile/www/index.html",
+        "mobile/www/app.js",
+        "web/index.html",
+        "web/app.js"
+      ]
+    }
+  },
+  "routes": [
+    "/"
+  ],
+  "readme_excerpt": "# 时间记录器 Time Logger\n地震密集台阵设备一致性检测 —— 锤击时刻的精确记录工具。\n通过 Web Audio API 监听设备麦克风，自动检测敲击瞬态声波并定位起始样本，补偿音频链路延迟后记录精确北京时间（UTC+8，秒值小数位最高 6 位）。项目包含三个部分：\n- **Web 前端**：单页应用，免安装，手机浏览器打开即用\n- **服务端**：零依赖 Node.js HTTPS 静态服务器（浏览器只有在 HTTPS 安全上下文下才允许访问麦克风），同时提供单向数据同步备份接口\n- **Android 客户端**：基于 [Capacitor](https://capacitorjs.com/) 打包的离线 APK\n## 功能特性\n- 🎙️ **自动检测敲击**：基于阈值触发的瞬态声波检测，可调触发阈值与防重复间隔\n- ⏱️ **高精度时间戳**：北京时间 UTC+8，秒值小数位 2~6 位可配置，支持附加时间补偿\n- 📑 **三标签导航**：底部导航栏分为「记录 / 历史 / 设置」三个视图，功能分区清晰\n- 🗂️ **历史视图**：会话列表（导出/删除）、数据同步状态与日志集中管理，切屏即达\n- 💾 **本地持久化**：数据存入 IndexedDB（旧版本 localStorage 记录自动迁移），断网可用\n- 📤 **`.dat` 导出**：纯文本格式，每行一条时间戳，可直接用于后续数据处理\n- ☁️ **自动同步备份**：停止记录后自动增量上传至服务器，带 SHA-256 完整性校验、失败退避重试、断网续传，按设备落盘；网页版自动填入当前站点作为同步地址，APK 会记住上次同步成功的服务器；同步令牌仅在服务器启用 `SYNC_TOKEN` 校验时才会显示\n- 📱 **PWA 支持**：可添加到主屏幕，全屏独立运行\n- 🌗 **深浅色主题**：一键切换深色/浅色界面，选择持久保存，刷新不闪烁\n- 🖥️ **沉浸式状态栏**：APK 内系统状态栏/导航栏全透明，内容延伸至其下，状态栏图标颜色随主题自动切换\n## 界面预览\n| 记录 | 历史 |\n| --- | --- |\n| ![记录界面](docs/screenshots/recording.png) | ![历史界面](docs/screenshots/history.png) |\n| 浅色主题 | 设置 |\n| --- | --- |\n| ![浅色主题](docs/screenshots/light.png) | ![检测与导出设置](docs/screenshots/settings.png) |\n## 项目结构\n```\ntime-logger/\n├── server.js            # 零依赖 Node.js HTTPS 服务器 + 同步备份接口\n├── package.json\n├── start.sh / stop.sh   # 服务器启停脚本（后台运行，记录 PID 与日志）\n├── web/                 # Web 前端（服务端静态目录）\n│   ├── index.html\n│   ├── app.js           # 检测/记录/导出/同步核心逻辑\n│   ├── style.css\n│   └── logo.png         # 应用图标\n├── mobile/              # Android 客户端（Capacitor）\n│   ├── capacitor.config.json\n│   ├── www/             # web/ 的离线副本（npm run sync-web 同步）\n│   └── android/         # Capacitor 生成的 Android 工程\n└── data/                # 运行时生成：各设备同步备份数据（不入库）\n```\n## 快速开始（Web 版）\n### 环境要求\n- Node.js ≥ 14\n- OpenSSL（首次运行自动生成自签名证书，有效期 10 年）\n### 启动服务器",
+  "run_command_candidates": [
+    "npm run start"
+  ],
+  "feature_candidates": [
+    "myapp ExampleInstrumentedTest",
+    "timelogger MainActivity",
+    "timelogger SSLTrustWebViewClient",
+    "assets capacitor.config",
+    "assets capacitor.plugins",
+    "assets public",
+    "public app",
+    "public cordova",
+    "public cordova plugins",
+    "myapp ExampleUnitTest"
+  ]
+}

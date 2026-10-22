@@ -1,0 +1,80 @@
+{
+  "software_name": "台阵设备一致性检测时间记录器",
+  "project_root": "/root/time-logger",
+  "instruction": "本文件只收集证据，不决定行业、功能或手册结构。请由模型阅读这些证据以及必要的项目源码后，另行编写业务理解模型稿。",
+  "documents": [
+    {
+      "path": "README.md",
+      "size": 6166,
+      "headings": [
+        "时间记录器 Time Logger",
+        "功能特性",
+        "界面预览",
+        "项目结构",
+        "快速开始（Web 版）",
+        "环境要求",
+        "启动服务器",
+        "方式一：npm",
+        "方式二：脚本（后台运行）",
+        "停止",
+        "环境变量",
+        "数据同步与备份",
+        "Android 客户端",
+        "构建步骤",
+        "沉浸式状态栏",
+        "安全说明",
+        "许可证"
+      ],
+      "opening": "时间记录器 Time Logger 地震密集台阵设备一致性检测 —— 锤击时刻的精确记录工具。 通过 Web Audio API 监听设备麦克风，自动检测敲击瞬态声波并定位起始样本，补偿音频链路延迟后记录精确北京时间（UTC+8，秒值小数位最高 6 位）。项目包含三个部分： - Web 前端 ：单页应用，免安装，手机浏览器打开即用 - 服务端 ：零依赖 Node.js HTTPS 静态服务器（浏览器只有在 HTTPS 安全上下文下才允许访问麦克风），同时提供单向数据同步备份接口 - Android 客户端 ：基于 Capacitor 打包的离线 APK 功能特性 - 🎙️ 自动检测敲击 ：基于阈值触发的瞬态声波检测，可调触发阈值与防重复间隔 - ⏱️ 高精度时间戳 ：北京时间 UTC+8，秒值小数位 2~6 位可配置，支持附加时间补偿 - 📑 三标签导航 ：底部导航栏分为「记录 / 历史 / 设置」三个视图，功能分区清晰 - 🗂️ 历史视图 ：会话列表（导出/删除）、数据同步状态与日志集中管理，切屏即达 - 💾 本地持久化 ：数据存入 IndexedDB（旧版本 localStorage 记录自动迁移），断网可用 - 📤 .dat 导出 ：纯文本格式，每行一条时间戳，可直接用于后续数据处理 - ☁️ 自动同步备份 ：停止记录后自动增量上传至服务器，带 SHA-256 完整性校验、失败退避重试、断网续传，按设备落盘；网页版自动填入当前站点作为同步地址，APK 会记住上次同步成功的服务器；同步令牌仅在服务器启用 SYNC TOKEN 校验时才会显示 - 📱 PWA 支持 ：可添加到主屏幕，全屏独立运行 - 🌗 深浅色主题 ：一键切换深色/浅色界面，选择持久保存，刷新不闪烁 - 🖥️ 沉浸式状态栏 ：APK 内系统状态栏/导航栏全透明，内容延伸至其下，状态栏图标颜色随主题自动切换 界面预览 记录 历史 --- --- !记录界面 !历史界面 浅色主题 设置 --- --- !浅色主题 !检测与导出设置 项目结构 快速开始（Web 版） 环境要求 - Node.js ≥ 14"
+    }
+  ],
+  "code_evidence": {
+    "project_name": "time-logger",
+    "software_name_candidate": "time logger",
+    "frameworks": [],
+    "language": "JavaScript、Java、Shell",
+    "routes": [
+      "/"
+    ],
+    "feature_name_candidates": [
+      "myapp ExampleInstrumentedTest",
+      "timelogger MainActivity",
+      "timelogger SSLTrustWebViewClient",
+      "assets capacitor.config",
+      "assets capacitor.plugins",
+      "assets public",
+      "public app",
+      "public cordova",
+      "public cordova plugins",
+      "myapp ExampleUnitTest"
+    ],
+    "entry_files": [],
+    "page_files": [
+      "mobile/android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java",
+      "mobile/android/app/src/main/java/com/timelogger/app/MainActivity.java",
+      "mobile/android/app/src/main/java/com/timelogger/app/SSLTrustWebViewClient.java",
+      "mobile/android/app/src/main/assets/capacitor.config.json",
+      "mobile/android/app/src/main/assets/capacitor.plugins.json",
+      "mobile/android/app/src/main/assets/public/index.html",
+      "mobile/android/app/src/main/assets/public/app.js",
+      "mobile/android/app/src/main/assets/public/cordova.js",
+      "mobile/android/app/src/main/assets/public/cordova_plugins.js",
+      "mobile/android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java"
+    ],
+    "component_files": [],
+    "api_files": [],
+    "run_command_candidates": [
+      "npm run start"
+    ],
+    "package": {
+      "name": "time-logger",
+      "path": "package.json",
+      "version": "1.0.0",
+      "scripts": {
+        "start": "node server.js"
+      },
+      "dependency_names": []
+    }
+  },
+  "external_research_notes": ""
+}
